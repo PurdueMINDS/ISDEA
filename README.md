@@ -1,4 +1,4 @@
-## Supplementary Code
+## IS-DEA Code Repository
 
 We provide our proposal implementation and baseline implementations here.
 - Our implementation is under `src`.
