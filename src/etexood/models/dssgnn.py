@@ -385,8 +385,7 @@ class DSSGNNExcl(Model):
         #
         self.dsslin1 = DSSLinearExcl(self.num_hiddens, self.num_hiddens, self.num_relations)
         self.dsslin2 = DSSLinearExcl(self.num_hiddens, self.num_hiddens, self.num_relations)
-        # \\:self.lin1 = torch.nn.Linear(self.num_hiddens * (2 + 2), self.num_hiddens)
-        self.lin1 = torch.nn.Linear(self.num_hiddens, self.num_hiddens)
+        self.lin1 = torch.nn.Linear(self.num_hiddens * (2 + 2), self.num_hiddens)
         self.lin2 = torch.nn.Linear(self.num_hiddens, 1)
 
     def get_embedding_shape_entity(self: SelfDSSGNNExcl, /) -> Sequence[int]:
@@ -447,8 +446,7 @@ class DSSGNNExcl(Model):
         self.dsslin2.reset_parameters(rng)
 
         #
-        # \\:self.reset_glorot(rng, self.lin1.weight.data, fanin=self.num_hiddens * (2 + 2), fanout=self.num_hiddens)
-        self.reset_glorot(rng, self.lin1.weight.data, fanin=self.num_hiddens, fanout=self.num_hiddens)
+        self.reset_glorot(rng, self.lin1.weight.data, fanin=self.num_hiddens * (2 + 2), fanout=self.num_hiddens)
         self.reset_zeros(rng, self.lin1.bias.data)
         self.reset_glorot(rng, self.lin2.weight.data, fanin=self.num_hiddens, fanout=1)
         self.reset_zeros(rng, self.lin2.bias.data)
@@ -562,10 +560,9 @@ class DSSGNNExcl(Model):
         objs_given_rel = vrps[adjs[1]][rids, rels].to(rels.device, non_blocking=True)
 
         #
-        # \\:dists_sub_to_obj = self.embedding_shortest[heus[:, 0]]
-        # \\:dists_obj_to_sub = self.embedding_shortest[heus[:, 1]]
-        # \\:erps = torch.concatenate((subs_given_rel, objs_given_rel, dists_sub_to_obj, dists_obj_to_sub), dim=1)
-        erps = self.embedding_shortest[torch.minimum(heus[:, 0], heus[:, 1])]
+        dists_sub_to_obj = self.embedding_shortest[heus[:, 0]]
+        dists_obj_to_sub = self.embedding_shortest[heus[:, 1]]
+        erps = torch.concatenate((subs_given_rel, objs_given_rel, dists_sub_to_obj, dists_obj_to_sub), dim=1)
 
         #
         scores = self.lin2.forward(self.activate(self.lin1.forward(erps)))
