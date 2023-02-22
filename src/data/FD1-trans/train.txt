@@ -1,0 +1,62 @@
+ node0 father   node3
+ node0  grand   node3
+ node1 father   node9
+ node1  grand   node9
+ node2 father  node11
+ node2  grand  node11
+ node2 father  node13
+ node2  grand  node13
+ node3 father  node15
+ node3  grand  node15
+ node4 father  node19
+ node4  grand  node19
+ node4 father  node21
+ node4  grand  node21
+ node6 father  node27
+ node6  grand  node27
+ node6 father  node29
+ node6  grand  node29
+ node7 father  node33
+ node7  grand  node33
+ node8 father  node35
+ node8  grand  node35
+ node8 father  node37
+ node8  grand  node37
+ node9 father  node41
+ node9  grand  node41
+node12 father  node53
+node12  grand  node53
+node15 father  node63
+node15  grand  node63
+node15 father  node65
+node15  grand  node65
+node16 father  node69
+node16  grand  node69
+node17 father  node71
+node17  grand  node71
+node18 father  node75
+node18  grand  node75
+node20 father  node85
+node20  grand  node85
+node22 father  node93
+node22  grand  node93
+node23 father  node97
+node23  grand  node97
+node24 father  node99
+node24  grand  node99
+node25 father node103
+node25  grand node103
+node26 father node107
+node26  grand node107
+node26 father node109
+node26  grand node109
+node27 father node111
+node27  grand node111
+node28 father node115
+node28  grand node115
+node28 father node117
+node28  grand node117
+node29 father node119
+node29  grand node119
+node29 father node121
+node29  grand node121

@@ -1,0 +1,45 @@
+00:56:39   Random seed: 1024
+00:56:39   Config file: config/WN18RR1-perm-ind.yaml
+00:56:39   {'dataset': {'class': 'IndWN18RR1PermInd',
+             'root': '~/ISDEA-main/clone/NBFNet/datasets/',
+             'version': {}},
+ 'etexood': {'myid': 42,
+             'resume': '/homes/zhou950/ISDEA-main/clone/NBFNet/experiments/NBFNet/IndWN18RR1Trans/42'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'NBFNet',
+           'dependent': False,
+           'hidden_dims': [32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': 'experiments/',
+ 'task': {'adversarial_temperature': 1,
+          'metric': ['mr',
+                     'mrr',
+                     'hits@1_50',
+                     'hits@3_50',
+                     'hits@5_50',
+                     'hits@10_50'],
+          'num_negative': 2,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 50}}
+00:56:39   IndWN18RR1PermInd dataset
+00:56:39   #train: 1618, #valid: 188, #test: 188
+00:56:41   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:56:41   Evaluate on valid
+00:56:43   mr: 296.037
+00:56:43   mrr: 0.297813
+00:56:43   hits@1_50: 0.723517
+00:56:43   hits@3_50: 0.793713
+00:56:43   hits@5_50: 0.834672
+00:56:43   hits@10_50: 0.916305
+00:56:43   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+00:56:43   Evaluate on test
+00:56:43   mr: 296.037
+00:56:43   mrr: 0.297813
+00:56:43   hits@1_50: 0.723517
+00:56:43   hits@3_50: 0.793713
+00:56:43   hits@5_50: 0.834672
+00:56:43   hits@10_50: 0.916305

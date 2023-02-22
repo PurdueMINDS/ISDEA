@@ -1,0 +1,57 @@
+02:46:16   Random seed: 1024
+02:46:16   Config file: config/WN18RR1-ind.yaml
+02:46:16   {'dataset': {'class': 'IndWN18RR1Ind',
+             'root': '~/ISDEA-main/clone/NBFNet/datasets/',
+             'version': {}},
+ 'etexood': {'myid': 54,
+             'resume': '/homes/zhou950/ISDEA-main/clone/NBFNet/experiments/NBFNet/IndWN18RR1Trans/54'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'NBFNet',
+           'dependent': False,
+           'hidden_dims': [32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': 'experiments/',
+ 'task': {'adversarial_temperature': 1,
+          'metric': ['mr',
+                     'mrr',
+                     'hits@1_50',
+                     'hits@3_50',
+                     'hits@5_50',
+                     'hits@10_50',
+                     'hits@1',
+                     'hits@3',
+                     'hits@5',
+                     'hits@10'],
+          'num_negative': 2,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 50}}
+02:46:16   IndWN18RR1Ind dataset
+02:46:16   #train: 1618, #valid: 188, #test: 188
+02:46:17   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:46:17   Evaluate on valid
+02:46:19   mr: 2.52926
+02:46:19   mrr: 0.80255
+02:46:19   hits@1_50: 0.768216
+02:46:19   hits@3_50: 0.831442
+02:46:19   hits@5_50: 0.870111
+02:46:19   hits@10_50: 0.937057
+02:46:19   hits@1: 0.742021
+02:46:19   hits@3: 0.835106
+02:46:19   hits@5: 0.861702
+02:46:19   hits@10: 0.928191
+02:46:19   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:46:19   Evaluate on test
+02:46:19   mr: 2.44681
+02:46:19   mrr: 0.798045
+02:46:19   hits@1_50: 0.760349
+02:46:19   hits@3_50: 0.842553
+02:46:19   hits@5_50: 0.883618
+02:46:19   hits@10_50: 0.945529
+02:46:19   hits@1: 0.723404
+02:46:19   hits@3: 0.845745
+02:46:19   hits@5: 0.882979
+02:46:19   hits@10: 0.949468

@@ -1,0 +1,57 @@
+03:11:17   Random seed: 1024
+03:11:17   Config file: config/NELL9951-perm-ind.yaml
+03:11:17   {'dataset': {'class': 'IndNELL9951PermInd',
+             'root': '~/ISDEA-main/clone/NBFNet/datasets/',
+             'version': {}},
+ 'etexood': {'myid': 56,
+             'resume': '/homes/zhou950/ISDEA-main/clone/NBFNet/experiments/NBFNet/IndNELL9951Trans/56'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'NBFNet',
+           'dependent': False,
+           'hidden_dims': [32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': 'experiments/',
+ 'task': {'adversarial_temperature': 1,
+          'metric': ['mr',
+                     'mrr',
+                     'hits@1_50',
+                     'hits@3_50',
+                     'hits@5_50',
+                     'hits@10_50',
+                     'hits@1',
+                     'hits@3',
+                     'hits@5',
+                     'hits@10'],
+          'num_negative': 2,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 50}}
+03:11:17   IndNELL9951PermInd dataset
+03:11:17   #train: 833, #valid: 100, #test: 100
+03:11:18   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:11:18   Evaluate on valid
+03:11:20   mr: 1.335
+03:11:20   mrr: 0.87975
+03:11:20   hits@1_50: 0.847365
+03:11:20   hits@3_50: 0.954346
+03:11:20   hits@5_50: 0.98964
+03:11:20   hits@10_50: 0.999858
+03:11:20   hits@1: 0.795
+03:11:20   hits@3: 0.975
+03:11:20   hits@5: 0.995
+03:11:20   hits@10: 1
+03:11:20   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+03:11:20   Evaluate on test
+03:11:20   mr: 1.325
+03:11:20   mrr: 0.871667
+03:11:20   hits@1_50: 0.836472
+03:11:20   hits@3_50: 0.959226
+03:11:20   hits@5_50: 0.99427
+03:11:20   hits@10_50: 0.999993
+03:11:20   hits@1: 0.775
+03:11:20   hits@3: 0.99
+03:11:20   hits@5: 1
+03:11:20   hits@10: 1

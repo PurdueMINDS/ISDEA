@@ -1,0 +1,45 @@
+04:05:24   Random seed: 1024
+04:05:24   Config file: config/FB2371-perm-ind.yaml
+04:05:24   {'dataset': {'class': 'IndFB2371PermInd',
+             'root': '~/ISDEA-main/clone/NBFNet/datasets/',
+             'version': {}},
+ 'etexood': {'myid': 56,
+             'resume': '/homes/zhou950/ISDEA-main/clone/NBFNet/experiments/NBFNet/IndFB2371Trans/56'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'NBFNet',
+           'dependent': False,
+           'hidden_dims': [32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': 'experiments/',
+ 'task': {'adversarial_temperature': 1,
+          'metric': ['mr',
+                     'mrr',
+                     'hits@1_50',
+                     'hits@3_50',
+                     'hits@5_50',
+                     'hits@10_50'],
+          'num_negative': 2,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 50}}
+04:05:24   IndFB2371PermInd dataset
+04:05:24   #train: 1993, #valid: 205, #test: 205
+04:05:26   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:05:26   Evaluate on valid
+04:05:28   mr: 5.23659
+04:05:28   mrr: 0.558568
+04:05:28   hits@1_50: 0.489953
+04:05:28   hits@3_50: 0.605897
+04:05:28   hits@5_50: 0.681084
+04:05:28   hits@10_50: 0.810081
+04:05:28   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+04:05:28   Evaluate on test
+04:05:28   mr: 5.13415
+04:05:28   mrr: 0.558176
+04:05:28   hits@1_50: 0.489894
+04:05:28   hits@3_50: 0.589561
+04:05:28   hits@5_50: 0.668431
+04:05:28   hits@10_50: 0.824444

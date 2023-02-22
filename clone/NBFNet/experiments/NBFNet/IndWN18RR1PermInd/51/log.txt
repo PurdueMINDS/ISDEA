@@ -1,0 +1,57 @@
+02:40:36   Random seed: 1024
+02:40:36   Config file: config/WN18RR1-perm-ind.yaml
+02:40:36   {'dataset': {'class': 'IndWN18RR1PermInd',
+             'root': '~/ISDEA-main/clone/NBFNet/datasets/',
+             'version': {}},
+ 'etexood': {'myid': 51,
+             'resume': '/homes/zhou950/ISDEA-main/clone/NBFNet/experiments/NBFNet/IndWN18RR1Trans/51'},
+ 'model': {'aggregate_func': 'pna',
+           'class': 'NBFNet',
+           'dependent': False,
+           'hidden_dims': [32, 32, 32],
+           'input_dim': 32,
+           'layer_norm': True,
+           'message_func': 'distmult',
+           'short_cut': True},
+ 'optimizer': {'class': 'Adam', 'lr': 0.005},
+ 'output_dir': 'experiments/',
+ 'task': {'adversarial_temperature': 1,
+          'metric': ['mr',
+                     'mrr',
+                     'hits@1_50',
+                     'hits@3_50',
+                     'hits@5_50',
+                     'hits@10_50',
+                     'hits@1',
+                     'hits@3',
+                     'hits@5',
+                     'hits@10'],
+          'num_negative': 2,
+          'strict_negative': True},
+ 'train': {'batch_size': 64, 'gpus': [0], 'log_interval': 100, 'num_epoch': 50}}
+02:40:36   IndWN18RR1PermInd dataset
+02:40:36   #train: 1618, #valid: 188, #test: 188
+02:40:38   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:40:38   Evaluate on valid
+02:40:39   mr: 2.67553
+02:40:39   mrr: 0.7858
+02:40:39   hits@1_50: 0.749777
+02:40:39   hits@3_50: 0.80029
+02:40:39   hits@5_50: 0.846311
+02:40:39   hits@10_50: 0.940001
+02:40:39   hits@1: 0.731383
+02:40:39   hits@3: 0.792553
+02:40:39   hits@5: 0.840425
+02:40:39   hits@10: 0.941489
+02:40:39   >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+02:40:39   Evaluate on test
+02:40:39   mr: 2.65691
+02:40:39   mrr: 0.774339
+02:40:39   hits@1_50: 0.7346
+02:40:39   hits@3_50: 0.805105
+02:40:39   hits@5_50: 0.85014
+02:40:39   hits@10_50: 0.939997
+02:40:39   hits@1: 0.704787
+02:40:39   hits@3: 0.800532
+02:40:39   hits@5: 0.845745
+02:40:39   hits@10: 0.941489
