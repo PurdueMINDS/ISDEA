@@ -14,7 +14,10 @@ __pycache__/
 
 #
 /data/
+/data
 /figure/
+/figure
 /cache/
 /cache
 /logs/
+/logs

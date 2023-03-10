@@ -8,7 +8,7 @@ export MKL_NUM_THREADS=1
 export OPENBLAS_NUM_THREADS=1
 
 #
-epoch=2
+epoch=50
 
 #
 rm -rf cache

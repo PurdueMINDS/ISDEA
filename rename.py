@@ -114,95 +114,63 @@ def copy_ind(source: str, destination: str, /) -> None:
 RAW = os.path.join("clone", "GraIL", "data")
 
 
-def wn18rr_v1() -> None:
+def wn18rr(version: int, /) -> None:
     R"""
-    Task of WN18RR v1.
+    Task of WN18RR.
 
     Args
     ----
+    - version
+        Version ID.
 
     Returns
     -------
     """
     #
-    source = "WN18RR_v1"
-    destination = "WN18RR1"
+    source = "WN18RR_v{:d}".format(version)
+    destination = "WN18RR{:d}".format(version)
     os.makedirs(os.path.join("data", "-".join((destination, "trans"))), exist_ok=True)
     os.makedirs(os.path.join("data", "-".join((destination, "ind"))), exist_ok=True)
     copy_trans(os.path.join(RAW, source), os.path.join("data", "-".join((destination, "trans"))))
     copy_ind(os.path.join(RAW, "{:s}_ind".format(source)), os.path.join("data", "-".join((destination, "ind"))))
 
 
-def wn18rr_v4() -> None:
+def nell995(version: int, /) -> None:
     R"""
-    Task of WN18RR v4.
+    Task of NELL995.
 
     Args
     ----
+    - version
+        Version ID.
 
     Returns
     -------
     """
     #
-    source = "WN18RR_v4"
-    destination = "WN18RR4"
+    source = "nell_v{:d}".format(version)
+    destination = "NELL995{:d}".format(version)
     os.makedirs(os.path.join("data", "-".join((destination, "trans"))), exist_ok=True)
     os.makedirs(os.path.join("data", "-".join((destination, "ind"))), exist_ok=True)
     copy_trans(os.path.join(RAW, source), os.path.join("data", "-".join((destination, "trans"))))
     copy_ind(os.path.join(RAW, "{:s}_ind".format(source)), os.path.join("data", "-".join((destination, "ind"))))
 
 
-def wn18rr_v2() -> None:
+def fb237(version: int, /) -> None:
     R"""
-    Task of WN18RR v2.
+    Task of FB237.
 
     Args
     ----
+    - version
+        Version ID.
 
     Returns
     -------
     """
     #
-    source = "WN18RR_v2"
-    destination = "WN18RR2"
-    os.makedirs(os.path.join("data", "-".join((destination, "trans"))), exist_ok=True)
-    os.makedirs(os.path.join("data", "-".join((destination, "ind"))), exist_ok=True)
-    copy_trans(os.path.join(RAW, source), os.path.join("data", "-".join((destination, "trans"))))
-    copy_ind(os.path.join(RAW, "{:s}_ind".format(source)), os.path.join("data", "-".join((destination, "ind"))))
-
-
-def wn18rr_v3() -> None:
-    R"""
-    Task of WN18RR v3.
-
-    Args
-    ----
-
-    Returns
-    -------
-    """
-    #
-    source = "WN18RR_v3"
-    destination = "WN18RR3"
-    os.makedirs(os.path.join("data", "-".join((destination, "trans"))), exist_ok=True)
-    os.makedirs(os.path.join("data", "-".join((destination, "ind"))), exist_ok=True)
-    copy_trans(os.path.join(RAW, source), os.path.join("data", "-".join((destination, "trans"))))
-    copy_ind(os.path.join(RAW, "{:s}_ind".format(source)), os.path.join("data", "-".join((destination, "ind"))))
-
-
-def nell995_v1() -> None:
-    R"""
-    Task of NELL995 v1.
-
-    Args
-    ----
-
-    Returns
-    -------
-    """
-    #
-    source = "nell_v1"
-    destination = "NELL9951"
+    source = "fb237_v{:d}".format(version)
+    destination = "FB237{:d}".format(version)
     os.makedirs(os.path.join("data", "-".join((destination, "trans"))), exist_ok=True)
     os.makedirs(os.path.join("data", "-".join((destination, "ind"))), exist_ok=True)
     copy_trans(os.path.join(RAW, source), os.path.join("data", "-".join((destination, "trans"))))
@@ -212,8 +180,15 @@ def nell995_v1() -> None:
 #
 if __name__ == "__main__":
     #
-    wn18rr_v1()
-    wn18rr_v4()
-    wn18rr_v2()
-    wn18rr_v3()
-    nell995_v1()
+    wn18rr(1)
+    wn18rr(2)
+    wn18rr(3)
+    wn18rr(4)
+    nell995(1)
+    nell995(2)
+    nell995(3)
+    nell995(4)
+    fb237(1)
+    fb237(2)
+    fb237(3)
+    fb237(4)
