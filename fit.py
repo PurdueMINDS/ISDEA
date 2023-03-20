@@ -55,6 +55,8 @@ def main() -> None:
     parser.add_argument("--activate", type=str, required=True, help="Activation function.")
     parser.add_argument("--dropout", type=float, required=True, help="Dropout.")
     parser.add_argument("--num-bases", type=int, required=True, help="Number of RGCN bases.")
+    parser.add_argument("--dss-aggr", type=str, required=True, help="DSS aggregation")
+    parser.add_argument("--ablate", type=str, required=False, default="", help="DSS triplet feature ablation study")
     parser.add_argument("--clip-grad-norm", type=float, required=True, help="Gradient clipping norm.")
     parser.add_argument("--lr", type=float, required=True, help="Learning rate.")
     parser.add_argument("--weight-decay", type=float, required=True, help="Weight decay.")
@@ -74,7 +76,9 @@ def main() -> None:
     assert 10 ** int(math.log10(float(args.lr))) == args.lr
 
     # Allocate logging disk space.
-    prefix = "~".join([args.task, "dx{:d}".format(1 + int(args.bidirect)), args.model])
+    prefix = "~".join(
+        [args.task, "dx{:d}".format(1 + int(args.bidirect)), "-".join([args.model, args.dss_aggr, args.ablate])],
+    )
     suffix = "~".join(
         (
             "e{:d}-ss{:d}".format(args.num_epochs, args.seed_schedule),
@@ -164,6 +168,15 @@ def main() -> None:
     assert onp.all(dataset.triplets_train[starter_trans:][:, 2] == rels_train)
     assert onp.all(dataset.triplets_valid[:, 2] == rels_valid)
 
+    # To fit with NBFNet design by corrupting only object with inversion augmentation.
+    if args.bidirect:
+        #
+        logger.info("-- Augment training and validation by inversion.")
+        adjs_train = onp.concatenate((adjs_train[[0, 1]], adjs_train[[1, 0]]), axis=1)
+        rels_train = onp.concatenate((rels_train, rels_train + num_relations))
+        adjs_valid = onp.concatenate((adjs_valid[[0, 1]], adjs_valid[[1, 0]]), axis=1)
+        rels_valid = onp.concatenate((rels_valid, rels_valid + num_relations))
+
     # Merge training and validation if we want to overfit on provided tuning data.
     # It should only be used for debugging.
     if args.overfit:
@@ -249,6 +262,8 @@ def main() -> None:
                 "num_bases": args.num_bases,
                 "kernel": "gin",
                 "train_eps": True,
+                "dss_aggr": args.dss_aggr,
+                "ablate": args.ablate,
             },
         )
         .reset_parameters(torch.Generator("cpu").manual_seed(args.seed_model))

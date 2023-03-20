@@ -126,18 +126,6 @@ def main() -> None:
     adjs_ind_test = tripelts_ind_test[:, :2].T
     rels_ind_test = tripelts_ind_test[:, 2]
 
-    # Lock triplets in memory.
-    adjs_trans_observe.setflags(write=False)
-    rels_trans_observe.setflags(write=False)
-    adjs_trans_train.setflags(write=False)
-    rels_trans_train.setflags(write=False)
-    adjs_trans_valid.setflags(write=False)
-    rels_trans_valid.setflags(write=False)
-    adjs_ind_observe.setflags(write=False)
-    rels_ind_observe.setflags(write=False)
-    adjs_ind_test.setflags(write=False)
-    rels_ind_test.setflags(write=False)
-
     # Check data.
     starter_trans = int(len(dataset_trans.triplets_observe) != len(dataset_trans.triplets_train))
     starter_trans *= len(dataset_trans.triplets_observe)
@@ -163,6 +151,29 @@ def main() -> None:
     assert len(dataset_ind.triplets_test) == len(rels_ind_test)
     assert adjs_ind_test.ndim == 2 and tuple(adjs_ind_test.shape) == (2, len(rels_ind_test))
     assert len(rels_ind_test) > 0
+
+    # To fit with NBFNet design by corrupting only object with inversion augmentation.
+    if args.bidirect:
+        #
+        logger.info("-- Augment training, validation and test by inversion.")
+        adjs_trans_train = onp.concatenate((adjs_trans_train[[0, 1]], adjs_trans_train[[1, 0]]), axis=1)
+        rels_trans_train = onp.concatenate((rels_trans_train, rels_trans_train + num_relations_trans))
+        adjs_trans_valid = onp.concatenate((adjs_trans_valid[[0, 1]], adjs_trans_valid[[1, 0]]), axis=1)
+        rels_trans_valid = onp.concatenate((rels_trans_valid, rels_trans_valid + num_relations_trans))
+        adjs_ind_test = onp.concatenate((adjs_ind_test[[0, 1]], adjs_ind_test[[1, 0]]), axis=1)
+        rels_ind_test = onp.concatenate((rels_ind_test, rels_ind_test + num_relations_ind))
+
+    # Lock triplets in memory.
+    adjs_trans_observe.setflags(write=False)
+    rels_trans_observe.setflags(write=False)
+    adjs_trans_train.setflags(write=False)
+    rels_trans_train.setflags(write=False)
+    adjs_trans_valid.setflags(write=False)
+    rels_trans_valid.setflags(write=False)
+    adjs_ind_observe.setflags(write=False)
+    rels_ind_observe.setflags(write=False)
+    adjs_ind_test.setflags(write=False)
+    rels_ind_test.setflags(write=False)
 
     #
     assert args.sample == "heuristics", "Only heuristics version can generate schedule."
@@ -212,7 +223,8 @@ def main() -> None:
         device=torch.device("cpu"),
     )
 
-    #
+    # Adjust test negative ratio by half since test cases are augmented by twice.
+    # For NBFNet negative sampling.
     logger.critical("-- Generate training schedule:")
     trainer.generate(
         adjs_trans_train,
@@ -236,13 +248,14 @@ def main() -> None:
         reusable_edge=True,
     )
     logger.critical("-- Generate test schedule:")
+    test_negative_rate_eval = args.negative_rate_eval // 2
     tester.generate(
         adjs_ind_test,
         rels_ind_test,
         1,
         batch_size_node=args.batch_size_node,
-        batch_size_edge=args.batch_size_edge_test * (1 + args.negative_rate_eval),
-        negative_rate=args.negative_rate_eval,
+        batch_size_edge=args.batch_size_edge_test * (1 + test_negative_rate_eval),
+        negative_rate=test_negative_rate_eval,
         seed=args.seed + 3,
         reusable_edge=True,
     )

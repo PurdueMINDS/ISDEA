@@ -24,10 +24,12 @@ def main() -> None:
     parser.add_argument("--resume", type=str, required=True, help="Resuming log directory.")
     parser.add_argument("--shuffle", action="store_true", help="Shuffle node and relation IDs in testing.")
     parser.add_argument("--special", type=str, default="", help="Special test dataset.")
+    parser.add_argument("--resume-param", type=str, required=False, help="Resuming parameter directory.")
     args = parser.parse_args()
     resume = args.resume
     shuffle = args.shuffle
     path_special = args.special
+    resume_param = args.resume_param
     shuffle_seed = 42
 
     #
@@ -57,10 +59,24 @@ def main() -> None:
     if len(path_special) > 0:
         #
         (title_special, _) = os.path.basename(path_special).split("-")
-        prefix = "~".join([title_special, "dx{:d}".format(1 + int(args.bidirect)), "X", args.model])
+        prefix = "~".join(
+            [
+                title_special,
+                "dx{:d}".format(1 + int(args.bidirect)),
+                "X",
+                "-".join([args.model, args.dss_aggr, args.ablate]),
+            ]
+        )
     else:
         #
-        prefix = "~".join([args.task, "dx{:d}".format(1 + int(args.bidirect)), str(int(shuffle)), args.model])
+        prefix = "~".join(
+            [
+                args.task,
+                "dx{:d}".format(1 + int(args.bidirect)),
+                str(int(shuffle)),
+                "-".join([args.model, args.dss_aggr, args.ablate]),
+            ]
+        )
     suffix = "~".join(
         (
             "e{:d}-ss{:d}".format(args.num_epochs, args.seed_schedule),
@@ -85,11 +101,14 @@ def main() -> None:
     logger = etexood.loggings.create_logger(unique, os.path.basename(unique), level_file=None, level_console=None)
 
     # Load dataset.
+    print(path_dataset)
     dataset = etexood.datasets.DatasetTriplet.from_file(logger, path_dataset)
 
-    # Prepare observed graph.
+    #
     num_nodes = len(dataset._entity2id)
     num_relations = len(dataset._relation2id)
+
+    # Prepare observed graph.
     tripelts_observe = dataset.triplets_observe
     adjs_observe = tripelts_observe[:, :2].T
     rels_observe = tripelts_observe[:, 2]
@@ -129,21 +148,22 @@ def main() -> None:
     ).item()
     assert onp.all(dataset.triplets_test[:, 2] == rels_test)
 
+    # To fit with NBFNet design by corrupting only object with inversion augmentation.
+    if args.bidirect:
+        #
+        logger.info("-- Augment test by inversion.")
+        adjs_test = onp.concatenate((adjs_test[[0, 1]], adjs_test[[1, 0]]), axis=1)
+        rels_test = onp.concatenate((rels_test, rels_test + num_relations))
+
     #
     if shuffle:
         #
-        if args.bidirect:
-            #
-            perm_relation = onp.array(list(reversed(range(num_relations * 2))))
-        else:
-            #
-            perm_relation = onp.array(list(reversed(range(num_relations))))
-
+        perm_relation = onp.array(list(reversed(range(num_relations * (1 + args.bidirect)))))
+    else:
         #
-        adjs_observe = onp.stack((adjs_observe[0], adjs_observe[1]))
-        rels_observe = perm_relation[rels_observe]
-        adjs_test = onp.stack((adjs_test[0], adjs_test[1]))
-        rels_test = perm_relation[rels_test]
+        perm_relation = onp.array(list(range(num_relations * (1 + args.bidirect))))
+    rels_observe = perm_relation[rels_observe]
+    rels_test = perm_relation[rels_test]
 
     # Lock triplets in memory.
     adjs_observe.setflags(write=False)
@@ -168,15 +188,22 @@ def main() -> None:
         device=torch.device(args.device),
     )
 
-    #
+    # Adjust test negative ratio by half since test cases are augmented by twice.
+    # For NBFNet negative sampling.
+    test_negative_rate_eval = args.negative_rate_eval // 2
     tester.load(
         1,
         batch_size_node=args.batch_size_node,
-        batch_size_edge=args.batch_size_edge_test * (1 + args.negative_rate_eval),
-        negative_rate=args.negative_rate_eval,
+        batch_size_edge=args.batch_size_edge_test * (1 + test_negative_rate_eval),
+        negative_rate=test_negative_rate_eval,
         seed=args.seed_schedule + 3,
         reusable_edge=True,
     )
+    assert len(tester._minibatch_edge_heuristics._schedule) == 1
+    for prep_batch in tester._minibatch_edge_heuristics._schedule[0]:
+        #
+        assert len(prep_batch) == 4
+        prep_batch[2] = perm_relation[prep_batch[2]]
 
     #
     logger.info("-- Load a pretrained model:")
@@ -193,17 +220,25 @@ def main() -> None:
                 "num_bases": args.num_bases,
                 "kernel": "gin",
                 "train_eps": True,
+                "dss_aggr": args.dss_aggr,
+                "ablate": args.ablate,
             },
         )
         .reset_parameters(torch.Generator("cpu").manual_seed(args.seed_model))
         .to(torch.device(args.device))
     )
-    state_dict = torch.load(os.path.join(resume, "parameters"), map_location=torch.device(args.device))
+    if resume_param is None:
+        #
+        state_dict = torch.load(os.path.join(resume, "parameters"), map_location=torch.device(args.device))
+    else:
+        #
+        state_dict = torch.load(os.path.join(resume_param, "parameters"), map_location=torch.device(args.device))
     # \\:if len(model.embedding_entity) != len(state_dict["embedding_entity"]):
     # \\:    #
     # \\:    assert torch.all(model.embedding_entity.data == 1.0).item()
     # \\:    assert torch.all(state_dict["embedding_entity"] == 1.0).item()
     # \\:    state_dict["embedding_entity"] = model.embedding_entity.data
+    state_dict["embedding_entity"] = state_dict["embedding_entity"].new_ones((num_nodes, 1))
     model.load_state_dict(state_dict)
     name_loss = etexood.models.get_loss(0, 0, 0, 0, args.model, {})
 
@@ -215,7 +250,7 @@ def main() -> None:
         model,
         name_loss,
         ks=ks,
-        negative_rate=args.negative_rate_eval,
+        negative_rate=test_negative_rate_eval,
         margin=args.margin,
         eind=args.num_epochs,
         emax=args.num_epochs,

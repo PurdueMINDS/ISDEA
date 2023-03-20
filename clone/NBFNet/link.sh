@@ -16,27 +16,33 @@ for i in 1 2; do
 done
 
 #
-for data in WN18RR1 NELL9951; do
-    #
-    top=../../../../../data
-    mkdir -p datasets/${data}Trans/raw
-    ln -sb ${top}/${data}-trans/entities.dict datasets/${data}Trans/raw/
-    ln -sb ${top}/${data}-trans/relations.dict datasets/${data}Trans/raw/
-    ln -sb ${top}/${data}-trans/train.txt datasets/${data}Trans/raw/
-    ln -sb ${top}/${data}-trans/valid.txt datasets/${data}Trans/raw/
-    mkdir -p datasets/${data}Ind/raw
-    ln -sb ${top}/${data}-ind/entities.dict datasets/${data}Ind/raw/
-    ln -sb ${top}/${data}-ind/relations.dict datasets/${data}Ind/raw/
-    ln -sb ${top}/${data}-ind/observe.txt datasets/${data}Ind/raw/
-    ln -sb ${top}/${data}-ind/test.txt datasets/${data}Ind/raw/
+for prefix in WN18RR NELL995 FB237; do
+    for suffix in 1 2 3 4; do
+        #
+        top=../../../../../data
+        data=${prefix}${suffix}
+        mkdir -p datasets/${data}Trans/raw
+        ln -sb ${top}/${data}-trans/entities.dict datasets/${data}Trans/raw/
+        ln -sb ${top}/${data}-trans/relations.dict datasets/${data}Trans/raw/
+        ln -sb ${top}/${data}-trans/train.txt datasets/${data}Trans/raw/
+        ln -sb ${top}/${data}-trans/valid.txt datasets/${data}Trans/raw/
+        mkdir -p datasets/${data}Ind/raw
+        ln -sb ${top}/${data}-ind/entities.dict datasets/${data}Ind/raw/
+        ln -sb ${top}/${data}-ind/relations.dict datasets/${data}Ind/raw/
+        ln -sb ${top}/${data}-ind/observe.txt datasets/${data}Ind/raw/
+        ln -sb ${top}/${data}-ind/test.txt datasets/${data}Ind/raw/
+    done
 done
 
-for data in WN18RR1 NELL9951; do
-    #
-    top=../../../../../data
-    mkdir -p datasets/${data}PermInd/raw
-    ln -sb ${top}/${data}-ind-perm/entities.dict datasets/${data}PermInd/raw/
-    ln -sb ${top}/${data}-ind-perm/relations.dict datasets/${data}PermInd/raw/
-    ln -sb ${top}/${data}-ind-perm/observe.txt datasets/${data}PermInd/raw/
-    ln -sb ${top}/${data}-ind-perm/test.txt datasets/${data}PermInd/raw/
+for prefix in WN18RR NELL995 FB237; do
+    for suffix in 1 2 3 4; do
+        #
+        top=../../../../../data
+        data=${prefix}${suffix}
+        mkdir -p datasets/${data}PermInd/raw
+        ln -sb ${top}/${data}-ind-perm/entities.dict datasets/${data}PermInd/raw/
+        ln -sb ${top}/${data}-ind-perm/relations.dict datasets/${data}PermInd/raw/
+        ln -sb ${top}/${data}-ind-perm/observe.txt datasets/${data}PermInd/raw/
+        ln -sb ${top}/${data}-ind-perm/test.txt datasets/${data}PermInd/raw/
+    done
 done

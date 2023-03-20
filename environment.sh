@@ -3,9 +3,12 @@ set -e
 
 #
 project=$(basename $(pwd))
-if [[ ${CONDA_DEFAULT_ENV} != ${project} ]]; then
+code=$(basename $(dirname $(pwd)))
+if [[ ${CONDA_DEFAULT_ENV} != ${code}-${project} ]]; then
     #
-    echo -e "Conda environment must be \"\x1b[92m${project}\x1b[0m\", but get \"\x1b[91m${CONDA_DEFAULT_ENV}\x1b[0m\"."
+    target=${code}-${project}
+    output=${CONDA_DEFAULT_ENV}
+    echo -e "Conda environment must be \"\x1b[92m${target}\x1b[0m\", but get \"\x1b[91m${output}\x1b[0m\"."
     exit 1
 fi
 
@@ -42,17 +45,19 @@ vercu=cu117
 verth=1.13.0
 
 #
-install black "" 22.12.0
-install mypy "" 0.991
-install pytest "" 7.2.0
+install black "" 23.1.0
+install mypy "" 1.1.1
+install pytest "" 7.2.2
 install pytest-cov "" 4.0.0
-install numpy "" 1.24.1
+install numpy "" 1.24.2
 install more_itertools "" 8.14.0
-install scikit-learn "" 1.2.0
+install scikit-learn "" 1.2.2
 install seaborn "" 0.12.2
 install networkx "" 3.0
 install pydot "" 1.4.2
 install ninja "" 1.11.1
+install pyyaml "" 6.0
+install easydict "" 1.10
 install torch "" ${verth} --extra-index-url https://download.pytorch.org/whl/${vercu}
 install torch-scatter "" 2.1.0 -f https://data.pyg.org/whl/torch-${verth}+${vercu}.html
 install torch-sparse "" 0.6.16 -f https://data.pyg.org/whl/torch-${verth}+${vercu}.html
@@ -95,10 +100,3 @@ for package in ${!installed[@]}; do
         echo -e "${msg3} (${msg4})."
     fi
 done
-
-#
-if [[ ! -d src/${project,,} ]]; then
-    #
-    mkdir -p src/${project,,}
-fi
-pip install -e .

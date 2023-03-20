@@ -21,6 +21,7 @@ class DSSLinearExcl(torch.nn.Module):
         num_inputs: int,
         num_outputs: int,
         num_relations: int,
+        dss_aggr: str,
         /,
     ) -> None:
         R"""
@@ -34,6 +35,8 @@ class DSSLinearExcl(torch.nn.Module):
             Number of output dimensions.
         - num_relations
             Number of relations.
+        - dss_aggr
+            DSS aggregation.
 
         Returns
         -------
@@ -49,6 +52,11 @@ class DSSLinearExcl(torch.nn.Module):
         #
         self.lin1 = torch.nn.Linear(self.num_inputs, self.num_outputs)
         self.lin2 = torch.nn.Linear(self.num_inputs, self.num_outputs)
+        self.dss_aggr = dss_aggr
+        assert self.dss_aggr in ("sum", "mean")
+
+        #
+        self.batchnorm = torch.nn.BatchNorm1d(self.num_outputs)
 
     def reset_parameters(self: SelfDSSLinearExcl, rng: torch.Generator, /) -> SelfDSSLinearExcl:
         R"""
@@ -73,11 +81,15 @@ class DSSLinearExcl(torch.nn.Module):
         Model.reset_zeros(rng, self.lin2.bias.data)
 
         #
+        self.batchnorm.reset_parameters()
+
+        #
         assert sum(parameter.numel() for parameter in self.parameters()) == (
             self.lin1.weight.data.numel()
             + self.lin1.bias.data.numel()
             + self.lin2.weight.data.numel()
             + self.lin2.bias.data.numel()
+            + sum(param.numel() for param in self.batchnorm.parameters())
         )
 
         #
@@ -108,8 +120,18 @@ class DSSLinearExcl(torch.nn.Module):
 
             #
             vrps1 = self.lin1.forward(vfts[:, r])
-            vrps2 = self.lin2.forward(torch.sum(vfts[:, nrs], dim=1))
+            if self.dss_aggr == "sum":
+                #
+                vrps2 = self.lin2.forward(torch.sum(vfts[:, nrs], dim=1))
+            else:
+                #
+                vrps2 = self.lin2.forward(torch.sum(vfts[:, nrs], dim=1) / len(nrs))
             vrps[:, r] = vrps1 + vrps2
+
+        #
+        vrps = torch.reshape(vrps, (num_nodes * self.num_relations, self.num_outputs))
+        vrps = self.batchnorm(vrps)
+        vrps = torch.reshape(vrps, (num_nodes, self.num_relations, self.num_outputs))
         return vrps
 
 
@@ -123,6 +145,7 @@ class DSSConvExcl(torch.nn.Module):
         num_inputs: int,
         num_outputs: int,
         num_relations: int,
+        dss_aggr: str,
         /,
         *,
         activate: str,
@@ -149,6 +172,8 @@ class DSSConvExcl(torch.nn.Module):
             Kernel convolution name.
         - train_eps
             Training epislon of GIN.
+        - dss_aggr
+            DSS aggregation.
 
         Returns
         -------
@@ -188,6 +213,11 @@ class DSSConvExcl(torch.nn.Module):
         else:
             #
             raise RuntimeError('Unknown convolution kernel "{:s}".'.format(self.kernel))
+        self.dss_aggr = dss_aggr
+        assert self.dss_aggr in ("sum", "mean")
+
+        #
+        self.batchnorm = torch.nn.BatchNorm1d(self.num_outputs)
 
     def reset_parameters(self: SelfDSSConvExcl, rng: torch.Generator, /) -> SelfDSSConvExcl:
         R"""
@@ -224,6 +254,9 @@ class DSSConvExcl(torch.nn.Module):
                 Model.reset_zeros(rng, self.conv2.eps.data)
 
             #
+            self.batchnorm.reset_parameters()
+
+            #
             assert sum(parameter.numel() for parameter in self.parameters()) == (
                 self.conv1.nn[0].weight.data.numel()
                 + self.conv1.nn[0].bias.data.numel()
@@ -235,6 +268,7 @@ class DSSConvExcl(torch.nn.Module):
                 + self.conv2.nn[2].weight.data.numel()
                 + self.conv2.nn[2].bias.data.numel()
                 + int(self.train_eps)
+                + sum(param.numel() for param in self.batchnorm.parameters())
             )
         else:
             #
@@ -287,12 +321,22 @@ class DSSConvExcl(torch.nn.Module):
             if vfts.ndim == 3:
                 #
                 vrps1 = self.conv1.forward(vfts[:, r], adjs_r)
-                vrps2 = self.conv2.forward(torch.sum(vfts[:, nrs], dim=1), adjs_nrs)
+                if self.dss_aggr == "sum":
+                    #
+                    vrps2 = self.conv2.forward(torch.sum(vfts[:, nrs], dim=1), adjs_nrs)
+                else:
+                    #
+                    vrps2 = self.conv2.forward(torch.sum(vfts[:, nrs], dim=1) / len(nrs), adjs_nrs)
             else:
                 #
                 vrps1 = self.conv1.forward(vfts, adjs_r)
                 vrps2 = self.conv2.forward(vfts, adjs_nrs)
             vrps[:, r] = vrps1 + vrps2
+
+        #
+        vrps = torch.reshape(vrps, (num_nodes * self.num_relations, self.num_outputs))
+        vrps = self.batchnorm(vrps)
+        vrps = torch.reshape(vrps, (num_nodes, self.num_relations, self.num_outputs))
         return vrps
 
 
@@ -313,6 +357,8 @@ class DSSGNNExcl(Model):
         dropout: float,
         kernel: str,
         train_eps: bool,
+        dss_aggr: str,
+        ablate: str,
     ) -> None:
         R"""
         Initialize the class.
@@ -335,6 +381,10 @@ class DSSGNNExcl(Model):
             Kernel convolution name.
         - train_eps
             Training epislon of GIN.
+        - dss_aggr
+            DSS aggregation.
+        - ablate
+            Ablation study.
 
         Returns
         -------
@@ -343,10 +393,16 @@ class DSSGNNExcl(Model):
         torch.nn.Module.__init__(self)
 
         #
+        print("DSS+Opt:Sum/Mean+BatchNorm+Opt:Both/DSS/Dist")
+
+        #
         self.num_entities = num_entities
         self.num_relations = num_relations
         self.num_layers = num_layers
         self.num_hiddens = num_hiddens
+        self.dss_aggr = dss_aggr
+        self.ablate = ablate
+        assert self.ablate in ("both", "dss", "dist")
 
         #
         self.activate = cast(
@@ -365,7 +421,7 @@ class DSSGNNExcl(Model):
 
         #
         self.convs = torch.nn.ModuleList()
-        for (fanin, fanout) in (
+        for fanin, fanout in (
             (1, self.num_hiddens),
             *((self.num_hiddens, self.num_hiddens) for _ in range(self.num_layers - 1)),
         ):
@@ -375,6 +431,7 @@ class DSSGNNExcl(Model):
                     fanin,
                     fanout,
                     self.num_relations,
+                    self.dss_aggr,
                     activate=activate,
                     dropout=dropout,
                     kernel=kernel,
@@ -383,8 +440,8 @@ class DSSGNNExcl(Model):
             )
 
         #
-        self.dsslin1 = DSSLinearExcl(self.num_hiddens, self.num_hiddens, self.num_relations)
-        self.dsslin2 = DSSLinearExcl(self.num_hiddens, self.num_hiddens, self.num_relations)
+        self.dsslin1 = DSSLinearExcl(self.num_hiddens, self.num_hiddens, self.num_relations, self.dss_aggr)
+        self.dsslin2 = DSSLinearExcl(self.num_hiddens, self.num_hiddens, self.num_relations, self.dss_aggr)
         self.lin1 = torch.nn.Linear(self.num_hiddens * (2 + 2), self.num_hiddens)
         self.lin2 = torch.nn.Linear(self.num_hiddens, 1)
 
@@ -562,7 +619,15 @@ class DSSGNNExcl(Model):
         #
         dists_sub_to_obj = self.embedding_shortest[heus[:, 0]]
         dists_obj_to_sub = self.embedding_shortest[heus[:, 1]]
-        erps = torch.concatenate((subs_given_rel, objs_given_rel, dists_sub_to_obj, dists_obj_to_sub), dim=1)
+        if self.ablate == "dss":
+            #
+            erps = torch.concatenate((subs_given_rel, objs_given_rel, subs_given_rel, objs_given_rel), dim=1)
+        elif self.ablate == "dist":
+            #
+            erps = torch.concatenate((dists_sub_to_obj, dists_obj_to_sub, dists_sub_to_obj, dists_obj_to_sub), dim=1)
+        else:
+            #
+            erps = torch.concatenate((subs_given_rel, objs_given_rel, dists_sub_to_obj, dists_obj_to_sub), dim=1)
 
         #
         scores = self.lin2.forward(self.activate(self.lin1.forward(erps)))

@@ -487,13 +487,16 @@ class MinibatchEdgeHeuristics(Minibatch):
 
         # For a negative sample of each positive sample, randomly corrupt its subject or object.
         if negative_rate > 0:
-            # Uniformly decide if subject or object should be corrupted for each negative sample.
-            probs = rng.uniform(0.0, 1.0, (len(rels_neg),))
-            corrupt_sub = probs < 0.5
-            corrupt_obj = onp.logical_not(corrupt_sub)
-            # \\:# Only corrupt objects to be robust with NBFNet.
-            # \\:corrupt_sub = onp.zeros((len(rels_neg),), dtype=onp.bool_)
-            # \\:corrupt_obj = onp.ones((len(rels_neg),), dtype=onp.bool_)
+            # Select negative sampling:
+            # 1. regular one.
+            # 2. NBFNet one.
+            # \\:# Uniformly decide if subject or object should be corrupted for each negative sample.
+            # \\:probs = rng.uniform(0.0, 1.0, (len(rels_neg),))
+            # \\:corrupt_sub = probs < 0.5
+            # \\:corrupt_obj = onp.logical_not(corrupt_sub)
+            # Only corrupt objects when dataset are augmented with inversions to be robust with NBFNet.
+            corrupt_sub = onp.zeros((len(rels_neg),), dtype=onp.bool_)
+            corrupt_obj = onp.ones((len(rels_neg),), dtype=onp.bool_)
 
             # Generate corrupted node IDs for the first time.
             corrupts = rng.choice(self._num_nodes, (len(rels_neg),), replace=True)

@@ -52,6 +52,8 @@ def create_model(
             dropout=float(kwargs["dropout"]),
             kernel=str(kwargs["kernel"]),
             train_eps=bool(kwargs["train_eps"]),
+            dss_aggr=str(kwargs["dss_aggr"]),
+            ablate=str(kwargs["ablate"]),
         )
     # \\:elif name in ("distmult", "transe", "complex", "rotate"):
     # \\:    #

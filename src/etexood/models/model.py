@@ -389,11 +389,13 @@ class Model(abc.ABC, torch.nn.Module):
         num = len(lbls) // (1 + sample_negative_rate)
         scores_pos = torch.reshape(scores[:num], (num, 1))
         scores_neg = torch.reshape(scores[num:], (num, sample_negative_rate))
-        rankables = torch.cat((scores_pos, scores_neg), dim=1)
 
         #
-        ranks = torch.argsort(rankables, dim=1, descending=True)
-        (_, ranks) = torch.nonzero(ranks == 0).T
+        # \\:rankables = torch.cat((scores_pos, scores_neg), dim=1)
+        # \\:ranks = torch.argsort(rankables, dim=1, descending=True)
+        # \\:(_, ranks) = torch.nonzero(ranks == 0).T
+        # \\:ranks = (ranks + 1).to(lbls.dtype)
+        ranks = torch.sum(scores_pos <= scores_neg, dim=1)
         ranks = (ranks + 1).to(lbls.dtype)
 
         #

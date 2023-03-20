@@ -1,0 +1,5 @@
+dgl==0.9.1
+lmdb
+networkx
+scikit-learn
+tqdm

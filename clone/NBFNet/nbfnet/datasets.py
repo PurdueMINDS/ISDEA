@@ -6,7 +6,6 @@ import re  # MODIFY
 
 
 class IndRelLinkPredDataset(InMemoryDataset):
-
     urls = {
         # \\:"FB15k-237": [
         # \\:    "https://raw.githubusercontent.com/kkteru/grail/master/data/fb237_%s_ind/train.txt",
@@ -186,9 +185,7 @@ class IndRelLinkPredDataset(InMemoryDataset):
         test_fact_index = edge_index[:, test_fact_slice]
         test_fact_type = edge_type[test_fact_slice]
         # add flipped triplets for the fact graphs
-        train_fact_index = torch.cat(
-            [train_fact_index, train_fact_index.flip(0)], dim=-1
-        )
+        train_fact_index = torch.cat([train_fact_index, train_fact_index.flip(0)], dim=-1)
         train_fact_type = torch.cat([train_fact_type, train_fact_type + num_relations])
         test_fact_index = torch.cat([test_fact_index, test_fact_index.flip(0)], dim=-1)
         test_fact_type = torch.cat([test_fact_type, test_fact_type + num_relations])
@@ -197,12 +194,8 @@ class IndRelLinkPredDataset(InMemoryDataset):
         # \\:valid_slice = slice(sum(num_samples[:1]), sum(num_samples[:2]))
         # \\:test_slice = slice(sum(num_samples[:3]), sum(num_samples))
         train_slice = slice(None, sum(num_samples[: len(train_files)]))  # MODIFY
-        valid_slice = slice(
-            sum(num_samples[: len(train_files)]), sum(num_samples)
-        )  # MODIFY
-        test_slice = slice(
-            sum(num_samples[: len(train_files)]), sum(num_samples)
-        )  # MODIFY
+        valid_slice = slice(sum(num_samples[: len(train_files)]), sum(num_samples))  # MODIFY
+        test_slice = slice(sum(num_samples[: len(train_files)]), sum(num_samples))  # MODIFY
         train_data = Data(
             edge_index=train_fact_index,
             edge_type=train_fact_type,
@@ -233,13 +226,8 @@ class IndRelLinkPredDataset(InMemoryDataset):
             valid_data = self.pre_transform(valid_data)
             test_data = self.pre_transform(test_data)
 
-        assert (
-            train_data.num_nodes == valid_data.num_nodes
-            and train_data.num_nodes == test_data.num_nodes
-        )  # MODIFY
-        torch.save(
-            (self.collate([train_data, valid_data, test_data])), self.processed_paths[0]
-        )
+        assert train_data.num_nodes == valid_data.num_nodes and train_data.num_nodes == test_data.num_nodes  # MODIFY
+        torch.save((self.collate([train_data, valid_data, test_data])), self.processed_paths[0])
 
     def __repr__(self):
         return "%s()" % self.name

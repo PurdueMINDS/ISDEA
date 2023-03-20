@@ -1,5 +1,6 @@
 import os
 import json
+import pandas as pd
 
 
 # \\:task = "WN18RR1"
@@ -7,6 +8,7 @@ task = "NELL9951"
 
 
 print("DSSGNN")
+total_summary = {"mrr": [], "hit@10": [], "hit@5": [], "hit@1": []}
 for seed in (46, 45, 44, 43, 42):
     #
     results = {}
@@ -25,8 +27,11 @@ for seed in (46, 45, 44, 43, 42):
             results["hit@{:d}".format(topk)] = float(data["Hit@{:d}".format(topk)])
             results["mrr".format(topk)] = float(data["MRR"])
     results = {key: results[key] for key in sorted(results)}
+    for key in results:
+        #
+        total_summary[key].extend(results[key])
     print(results)
-
+df = pd.DataFrame(total_summary)
 
 print("Neural LP")
 for seed in (46, 45, 44, 43, 42):

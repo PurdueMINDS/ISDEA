@@ -315,6 +315,7 @@ class Transformer(object):
             self._sample == self.HEURISTICS
         ), "Only model utilizing heuristics-like input can provide full node embeddings."
         # \\:model = cast(ModelHeuristics, model)
+        model.eval()
 
         #
         updates: Sequence[List[int]]
@@ -558,6 +559,7 @@ class Evaluator(Transformer):
         #
         assert self._sample == self.HEURISTICS
         # \\:model = cast(ModelHeuristics, model)
+        model.eval()
 
         #
         (
@@ -1072,6 +1074,7 @@ class Trainer(Transformer):
         #
         assert self._sample == self.HEURISTICS
         # \\:model = cast(ModelHeuristics, model)
+        model.train()
 
         # Get all data for current batch.
         (
