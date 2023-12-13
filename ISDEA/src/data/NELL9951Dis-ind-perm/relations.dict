@@ -1,0 +1,14 @@
+0  concept:organizationheadquarteredincity
+1          concept:topmemberoforganization
+2                        concept:subpartof
+3  concept:televisionstationaffiliatedwith
+4       concept:agentbelongstoorganization
+5          concept:organizationhiredperson
+6                    concept:agentcontrols
+7                         concept:worksfor
+8                  concept:headquarteredin
+9       concept:agentcollaborateswithagent
+10           concept:companyeconomicsector
+11                        concept:acquired
+12    concept:organizationterminatedperson
+13           concept:subpartoforganization

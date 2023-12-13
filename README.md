@@ -1,32 +1,43 @@
-## IS-DEA Code Repository
+# Double Equivariance for Inductive Link Prediction for Both New Nodes and New Relation Types
 
-We provide our proposal implementation and baseline implementations here.
+This repository is the official implementation of the following [paper](https://arxiv.org/abs/2302.01313):
 
--   Our implementation is under `src`.
--   Our baseline reproduction is under `clone/*`.
-    Baselines are cloned from repos given in original paper with essential modifications to run with our data. All modifications are marked by comment `# MODIFY` and `# \\:`.
+> Gao, Jianfei et al. “Double Equivariance for Inductive Link Prediction for Both New Nodes and New Relation Types.” (2023).
 
-To execute our code, a virtual environment created by CONDA is required. Then execute `environment.sh` to install all dependencies.
-Execute `pip install -e .` to install our implementation as importable Python module `etexood` under debugging mode.
+It contains three (3) models introduced in the paper, which are located in their respective directory as follows:
 
-To execute baseline codes, please follow the README in each baseline repos to create independent virtual environments.
+- `ISDEA/`: The legacy implementation of the Inductive Structural Double Equivariant Architecture (ISDEA).
+- `ISDEA_PLUS/`: The new and improved Inductive Structural Double Equivariant Architecture **Plus** (ISDEA+), which achieves 20x - 120x speedup and attains superior performance compared to the legacy ISDEA. We thank Yucheng Zhang for his contribution to this implementation, and we hereby include his repository as a git submodule in this repository.
+- `DEq_InGram`: The Double Equivariant version of InGram, which achieves better performance than the original InGram on the doubly inductive link prediction task on knowledge graphs considered in the paper.
 
-## Execute
+To clone the repository, run:
+```
+git clone --recurse-submodules https://github.com/PurdueMINDS/ISDEA.git
+```
+This ensures that all files, including those from ISDEA+ that are added as git submodule to this repository, are cloned correctly.
 
-All example executions (`run.sh`) will run the least amount epoch (mostly 1). To reproduce results, please follow configuration in baseline papers and our paper.
-We use 50 epochs for all experiments.
+Please refer to the `README.md` file in each directory for more details on how to run the code.
 
-In `run.sh`, we provide the simplest example for synthetic FD-1 and FD-2 tasks.
-To run other real-world inductive knowledge graph completion datasets, please refer to `share-generate.sh`, `share-fit.sh` and `share-transform.sh`.
-For example, to run an experiment with ISDEA using mean DSS aggregation on FB237 v1, please set following variables in those three scripts as
 
-```bash
-task=FB2371
-model=dssgnn
-aggr=mean
-ablate=both
+## Citation
+
+When you use this code or data, we kindly ask you to cite *BOTH* our paper and the ISDEA+ github repository:
+```
+@article{gao2023double,
+  title={Double Equivariance for Inductive Link Prediction for Both New Nodes and New Relation Types},
+  author={Gao, Jianfei and Zhou, Yangze and Zhou, Jincheng and Ribeiro, Bruno},
+  journal={arXiv preprint arXiv:2302.01313},
+  year={2023}
+}
 ```
 
-To execute any baseline, go to corresponding directory under `clone`.
-In the directory, run `link.sh` first to link datasets into baseline directory, then run example execution `run.sh`.
-If you want to run on a new datasets, please change `task` variable in the example scripts of baselines.
+```
+@software{Zhang_ISDEA,
+author = {Zhang, Yucheng},
+title = {{ISDEA+}},
+url = {https://github.com/yuchengz99/ISDEA_PLUS}
+}
+```
+
+Thank you!
+

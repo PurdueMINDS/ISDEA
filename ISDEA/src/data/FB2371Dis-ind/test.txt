@@ -1,0 +1,29 @@
+ /m/0184jc                                                   /award/award_winner/awards_won./award/award_honor/award_winner  /m/0c35b1
+ /m/01cwdk                                                                   /education/educational_institution/school_type  /m/05jxkf
+/m/01m1dzc                                                   /award/award_winner/awards_won./award/award_honor/award_winner /m/01l03w2
+ /m/02482c                                                                   /education/educational_institution/school_type   /m/07tf8
+ /m/02bn_p                /government/legislative_session/members./government/government_position_held/legislative_sessions  /m/02glc4
+ /m/02bqn1                /government/legislative_session/members./government/government_position_held/legislative_sessions  /m/02cg7g
+ /m/02cg7g                /government/legislative_session/members./government/government_position_held/legislative_sessions  /m/060ny2
+ /m/02glc4                /government/legislative_session/members./government/government_position_held/legislative_sessions  /m/02cg7g
+ /m/02lgj6                                                   /award/award_winner/awards_won./award/award_honor/award_winner  /m/02lgfh
+/m/02p3cr5                                                                                       /music/record_label/artist  /m/01323p
+ /m/02rg_4                                                                   /education/educational_institution/school_type  /m/05pcjw
+  /m/03_8r                                   /olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country   /m/03h2c
+ /m/03hr1p                                   /olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country  /m/0d060g
+ /m/03kmyy                                                                   /education/educational_institution/school_type  /m/05pcjw
+ /m/03mp8k                                                                                       /music/record_label/artist  /m/0127s7
+ /m/04fc6c                                                                                       /music/record_label/artist /m/03y82t6
+  /m/04zwc                                                                   /education/educational_institution/school_type  /m/05jxkf
+  /m/05qd_                                                   /award/award_winner/awards_won./award/award_honor/award_winner  /m/02q_cc
+  /m/06dfg                                             /location/location/adjoin_s./location/adjoining_relationship/adjoins   /m/07tp2
+ /m/08wq0g                                                   /award/award_winner/awards_won./award/award_honor/award_winner  /m/0bt7ws
+/m/09gdh6k                                                                                        /film/film/film_festivals /m/0bmj62v
+/m/0crh5_f                                                                                        /film/film/film_festivals /m/0fpkxfd
+  /m/0f63n                                             /location/location/adjoin_s./location/adjoining_relationship/adjoins   /m/0f6_4
+ /m/0k2mxq                                                   /award/award_winner/awards_won./award/award_honor/award_winner  /m/05np4c
+  /m/0k_kr                                                                                       /music/record_label/artist   /m/07c0j
+  /m/0k_kr                                                                                       /music/record_label/artist   /m/0kr_t
+  /m/0kz2w                                                                   /education/educational_institution/school_type   /m/07tf8
+  /m/0ml_m                                             /location/location/adjoin_s./location/adjoining_relationship/adjoins   /m/0mlw1
+  /m/0pkyh                                                   /award/award_winner/awards_won./award/award_honor/award_winner  /m/02cx90
