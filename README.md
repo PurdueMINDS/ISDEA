@@ -7,7 +7,7 @@ This repository is the official implementation of the following [paper](https://
 It contains three (3) models introduced in the paper, which are located in their respective directory as follows:
 
 - `ISDEA/`: The legacy implementation of the Inductive Structural Double Equivariant Architecture (ISDEA).
-- `ISDEA_plus/`: The new and improved Inductive Structural Double Equivariant Architecture **Plus** (ISDEA+), which achieves 20x - 120x speedup and attains superior performance compared to the legacy ISDEA.
+- `ISDEA_PLUS/`: The new and improved Inductive Structural Double Equivariant Architecture **Plus** (ISDEA+), which achieves 20x - 120x speedup and attains superior performance compared to the legacy ISDEA. We thank Yucheng Zhang for his contribution to this implementation, and we hereby include his repository as a git submodule in this repository.
 - `DEq_InGram`: The Double Equivariant version of InGram, which achieves better performance than the original InGram on the doubly inductive link prediction task on knowledge graphs considered in the paper.
 
 To clone the repository, run:
