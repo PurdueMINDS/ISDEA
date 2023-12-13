@@ -1,0 +1,248 @@
+  v0 r/a   v3
+  v0 r/b   v4
+  v0 r/a   v5
+  v0 r/b   v6
+  v1 r/a   v7
+  v1 r/b   v8
+  v1 r/a   v9
+  v1 r/b  v10
+  v2 r/a  v11
+  v2 r/b  v12
+  v2 r/a  v13
+  v2 r/b  v14
+  v3 r/a  v15
+  v3 r/b  v16
+  v3 r/a  v17
+  v3 r/b  v18
+  v4 r/a  v19
+  v4 r/b  v20
+  v4 r/a  v21
+  v4 r/b  v22
+  v5 r/a  v23
+  v5 r/b  v24
+  v5 r/a  v25
+  v5 r/b  v26
+  v6 r/a  v27
+  v6 r/b  v28
+  v6 r/a  v29
+  v6 r/b  v30
+  v7 r/a  v31
+  v7 r/b  v32
+  v7 r/a  v33
+  v7 r/b  v34
+  v8 r/a  v35
+  v8 r/b  v36
+  v8 r/a  v37
+  v8 r/b  v38
+  v9 r/a  v39
+  v9 r/b  v40
+  v9 r/a  v41
+  v9 r/b  v42
+ v10 r/a  v43
+ v10 r/b  v44
+ v10 r/a  v45
+ v10 r/b  v46
+ v11 r/a  v47
+ v11 r/b  v48
+ v11 r/a  v49
+ v11 r/b  v50
+ v12 r/a  v51
+ v12 r/b  v52
+ v12 r/a  v53
+ v12 r/b  v54
+ v13 r/a  v55
+ v13 r/b  v56
+ v13 r/a  v57
+ v13 r/b  v58
+ v14 r/a  v59
+ v14 r/b  v60
+ v14 r/a  v61
+ v14 r/b  v62
+ v15 r/a  v63
+ v15 r/b  v64
+ v15 r/a  v65
+ v15 r/b  v66
+ v16 r/a  v67
+ v16 r/b  v68
+ v16 r/a  v69
+ v16 r/b  v70
+ v17 r/a  v71
+ v17 r/b  v72
+ v17 r/a  v73
+ v17 r/b  v74
+ v18 r/a  v75
+ v18 r/b  v76
+ v18 r/a  v77
+ v18 r/b  v78
+ v19 r/a  v79
+ v19 r/b  v80
+ v19 r/a  v81
+ v19 r/b  v82
+ v20 r/a  v83
+ v20 r/b  v84
+ v20 r/a  v85
+ v20 r/b  v86
+ v21 r/a  v87
+ v21 r/b  v88
+ v21 r/a  v89
+ v21 r/b  v90
+ v22 r/a  v91
+ v22 r/b  v92
+ v22 r/a  v93
+ v22 r/b  v94
+ v23 r/a  v95
+ v23 r/b  v96
+ v23 r/a  v97
+ v23 r/b  v98
+ v24 r/a  v99
+ v24 r/b v100
+ v24 r/a v101
+ v24 r/b v102
+ v25 r/a v103
+ v25 r/b v104
+ v25 r/a v105
+ v25 r/b v106
+ v26 r/a v107
+ v26 r/b v108
+ v26 r/a v109
+ v26 r/b v110
+ v27 r/a v111
+ v27 r/b v112
+ v27 r/a v113
+ v27 r/b v114
+ v28 r/a v115
+ v28 r/b v116
+ v28 r/a v117
+ v28 r/b v118
+ v29 r/a v119
+ v29 r/b v120
+ v29 r/a v121
+ v29 r/b v122
+ v30 r/a v123
+ v30 r/b v124
+ v30 r/a v125
+ v30 r/b v126
+v127 r/x v130
+v127 r/y v131
+v127 r/x v132
+v127 r/y v133
+v128 r/x v134
+v128 r/y v135
+v128 r/x v136
+v128 r/y v137
+v129 r/x v138
+v129 r/y v139
+v129 r/x v140
+v129 r/y v141
+v130 r/x v142
+v130 r/y v143
+v130 r/x v144
+v130 r/y v145
+v131 r/x v146
+v131 r/y v147
+v131 r/x v148
+v131 r/y v149
+v132 r/x v150
+v132 r/y v151
+v132 r/x v152
+v132 r/y v153
+v133 r/x v154
+v133 r/y v155
+v133 r/x v156
+v133 r/y v157
+v134 r/x v158
+v134 r/y v159
+v134 r/x v160
+v134 r/y v161
+v135 r/x v162
+v135 r/y v163
+v135 r/x v164
+v135 r/y v165
+v136 r/x v166
+v136 r/y v167
+v136 r/x v168
+v136 r/y v169
+v137 r/x v170
+v137 r/y v171
+v137 r/x v172
+v137 r/y v173
+v138 r/x v174
+v138 r/y v175
+v138 r/x v176
+v138 r/y v177
+v139 r/x v178
+v139 r/y v179
+v139 r/x v180
+v139 r/y v181
+v140 r/x v182
+v140 r/y v183
+v140 r/x v184
+v140 r/y v185
+v141 r/x v186
+v141 r/y v187
+v141 r/x v188
+v141 r/y v189
+v142 r/x v190
+v142 r/y v191
+v142 r/x v192
+v142 r/y v193
+v143 r/x v194
+v143 r/y v195
+v143 r/x v196
+v143 r/y v197
+v144 r/x v198
+v144 r/y v199
+v144 r/x v200
+v144 r/y v201
+v145 r/x v202
+v145 r/y v203
+v145 r/x v204
+v145 r/y v205
+v146 r/x v206
+v146 r/y v207
+v146 r/x v208
+v146 r/y v209
+v147 r/x v210
+v147 r/y v211
+v147 r/x v212
+v147 r/y v213
+v148 r/x v214
+v148 r/y v215
+v148 r/x v216
+v148 r/y v217
+v149 r/x v218
+v149 r/y v219
+v149 r/x v220
+v149 r/y v221
+v150 r/x v222
+v150 r/y v223
+v150 r/x v224
+v150 r/y v225
+v151 r/x v226
+v151 r/y v227
+v151 r/x v228
+v151 r/y v229
+v152 r/x v230
+v152 r/y v231
+v152 r/x v232
+v152 r/y v233
+v153 r/x v234
+v153 r/y v235
+v153 r/x v236
+v153 r/y v237
+v154 r/x v238
+v154 r/y v239
+v154 r/x v240
+v154 r/y v241
+v155 r/x v242
+v155 r/y v243
+v155 r/x v244
+v155 r/y v245
+v156 r/x v246
+v156 r/y v247
+v156 r/x v248
+v156 r/y v249
+v157 r/x v250
+v157 r/y v251
+v157 r/x v252
+v157 r/y v253

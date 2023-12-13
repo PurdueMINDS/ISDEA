@@ -1,0 +1,2 @@
+08877208           _instance_hypernym 08633957
+08895771           _instance_hypernym 08524735
