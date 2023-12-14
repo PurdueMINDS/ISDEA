@@ -35,7 +35,10 @@ When you use this code or data, we kindly ask you to cite *BOTH* our paper and t
 @software{Zhang_ISDEA,
 author = {Zhang, Yucheng},
 title = {{ISDEA+}},
-url = {https://github.com/yuchengz99/ISDEA_PLUS}
+url = {https://github.com/yuchengz99/ISDEA_PLUS},
+month = {12},
+year = {2023},
+version = {1.0.0}
 }
 ```
 
